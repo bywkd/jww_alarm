@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Alarm</string>
+
+
+    <!--    registerAlarm-->
+    <string name="registerAlarmTitle">알람 등록</string>
+    <string name="time">시간</string>
+    <string name="sound">소리</string>
+    <string name="vibration">진동</string>
 </resources>
