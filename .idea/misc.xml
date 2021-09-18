@@ -7,7 +7,8 @@
         <entry key="..\:/and_workspace/jww_alarm/app/src/main/res/layout/fragment_alarm_list.xml" value="0.25364583333333335" />
         <entry key="..\:/and_workspace/jww_alarm/app/src/main/res/layout/fragment_register_alarm.xml" value="0.25364583333333335" />
         <entry key="..\:/and_workspace/jww_alarm/app/src/main/res/layout/fragment_setting.xml" value="0.25364583333333335" />
-        <entry key="..\:/and_workspace/jww_alarm/app/src/main/res/layout/item_alarm_list.xml" value="0.1296875" />
+        <entry key="..\:/and_workspace/jww_alarm/app/src/main/res/layout/item_alarm_list.xml" value="0.2" />
+        <entry key="..\:/and_workspace/jww_alarm/app/src/main/res/menu/bottom_navi_menu.xml" value="0.1296875" />
       </map>
     </option>
   </component>

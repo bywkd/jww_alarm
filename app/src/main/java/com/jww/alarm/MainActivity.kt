@@ -2,7 +2,6 @@ package com.jww.alarm
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import com.jww.alarm.databinding.ActivityMainBinding
 import com.jww.alarm.eumes.VIEW_TYPE
 import com.jww.alarm.views.alarmListView.AlarmListFragment
@@ -18,13 +17,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initBottomNaviMenu()
+    }
 
-
+    private fun initBottomNaviMenu() {
+        _binding?.run {
+            bottomNV.setOnItemSelectedListener {
+                when (it.itemId) {
+                    R.id.navi_list -> {
+                        loadFragment(VIEW_TYPE.ALARM_LIST)
+                    }
+                    R.id.navi_register -> {
+                        loadFragment(VIEW_TYPE.REGISTER_ALARM)
+                    }
+                    R.id.navi_setting -> {
+                        loadFragment(VIEW_TYPE.SETTING)
+                    }
+                }
+                true
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        loadFragment(VIEW_TYPE.REGISTER_ALARM)
+//        loadFragment(VIEW_TYPE.ALARM_LIST)
+        _binding?.bottomNV?.selectedItemId = R.id.navi_list
     }
 
     private fun loadFragment(viewType: VIEW_TYPE) {
@@ -45,14 +63,14 @@ class MainActivity : AppCompatActivity() {
             }
             VIEW_TYPE.SETTING -> {
 //               설정화면
-                supportFragmentManager.popBackStack(
-                    VIEW_TYPE.SETTING.toString(),
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE
-                )
+//                supportFragmentManager.popBackStack(
+//                    VIEW_TYPE.SETTING.toString(),
+//                    FragmentManager.POP_BACK_STACK_INCLUSIVE
+//                )
                 val f = SettingFragment.newInstance()
                 val ft = supportFragmentManager.beginTransaction()
-                ft.add(binding.flRoot.id, f)
-                ft.addToBackStack(VIEW_TYPE.SETTING.toString())
+                ft.replace(binding.flRoot.id, f)
+//                ft.addToBackStack(VIEW_TYPE.SETTING.toString())
                 ft.commit()
             }
         }
