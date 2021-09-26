@@ -1,12 +1,13 @@
 package com.jww.alarm.models
 
 data class AlarmItemModel(
-    val amAndPm: String = "AM",
-    val hour: String = "01",
-    val min: String = "55",
-    val time: String = "${System.currentTimeMillis()} ~ ${System.currentTimeMillis()}",
+    val hour: Int = 0,
+    val min: Int = 0,
+    val year: Int = 0,
+    val month: Int = 0,
+    val dayOfMonth: Int = 0,
     val sound: Boolean = true,
     val vibration: Boolean = true,
-    val soundFileName: String = "파일 이름",
+    val soundFileName: String = "소리 파일이 없습니다.",
     val isActive: Boolean = true
 )

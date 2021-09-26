@@ -38,10 +38,10 @@ class AlarmListAdapter : RecyclerView.Adapter<AlarmListAdapter.ViewHolder>() {
     inner class ViewHolder(private val bind: ItemAlarmListBinding) :
         RecyclerView.ViewHolder(bind.root) {
         fun bind(data: AlarmItemModel) {
-            bind.tvAmAndPm.text = data.amAndPm
-            bind.tvHour.text = data.hour
-            bind.tvMin.text = data.min
-            bind.tvTime.text = data.time
+            bind.tvAmAndPm.text = if (data.hour > 12) "PM" else "AM"
+            bind.tvHour.text = data.hour.toString()
+            bind.tvMin.text = data.min.toString()
+            bind.tvTime.text = String.format("${data.year}.${data.month}.${data.dayOfMonth}")
             bind.tvSoundFileName.text = data.soundFileName
 
             if (data.sound) {
