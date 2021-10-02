@@ -1,11 +1,13 @@
 package com.jww.alarm.views.registerAlarmView
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.jww.alarm.MainActivity
 import com.jww.alarm.bases.BaseFragment
 import com.jww.alarm.databinding.FragmentRegisterAlarmBinding
 
@@ -27,6 +29,11 @@ class RegisterAlarmFragment : BaseFragment() {
         get() = _binding!!
 
     private lateinit var vm: RegisterAlarmVM
+    private lateinit var currentAct: MainActivity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        currentAct = (activity as MainActivity)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +73,7 @@ class RegisterAlarmFragment : BaseFragment() {
         }
 
         binding.ivRegister.setOnClickListener {
-            vm.completeRegister()
+            vm.completeRegister(currentAct)
         }
 
         binding.timePicker.setOnTimeChangedListener(vm.timerListener)

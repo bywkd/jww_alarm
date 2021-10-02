@@ -1,12 +1,17 @@
 package com.jww.alarm.views.registerAlarmView
 
+import android.content.Context
 import android.util.Log
 import android.widget.CalendarView
 import android.widget.TimePicker
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import java.text.DateFormat
+import com.jww.alarm.db.AlarmDataEntity
+import com.jww.alarm.db.AppDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class RegisterAlarmVM : ViewModel() {
@@ -24,15 +29,14 @@ class RegisterAlarmVM : ViewModel() {
     val timerListener = TimePicker.OnTimeChangedListener { timePicker, hour, min ->
         this.hour = hour
         this.min = min
-        Log.d("Won", "$hour = hour    $min  = min")
     }
 
     val calendarListener =
         CalendarView.OnDateChangeListener { calendarView, year, month, dayOfMonth ->
             calendar.set(year, month, dayOfMonth)
-            val dateFormatter = DateFormat.getDateInstance(DateFormat.MEDIUM)
-            val formattedDate = dateFormatter.format(calendar.time)
-            Log.d("Won", formattedDate)
+            this.year = year
+            this.month = month + 1
+            this.dayOfMonth = dayOfMonth
         }
 
     fun uiInitSound(isSound: Boolean): RegisterAlarmVM {
@@ -50,6 +54,8 @@ class RegisterAlarmVM : ViewModel() {
             this.hour = hour
             this.minute = min
         }
+        this.hour = hour
+        this.min = min
         return this
     }
 
@@ -78,8 +84,24 @@ class RegisterAlarmVM : ViewModel() {
     }
 
 
-    fun completeRegister() {
+    fun completeRegister(context: Context) {
 
+        Log.d("Won", "hour = $hour")
+        GlobalScope.launch(Dispatchers.IO) {
+            val data = AlarmDataEntity(
+                0,
+                hour,
+                min,
+                year,
+                month,
+                dayOfMonth,
+                isSound.value!!,
+                isVibration.value!!,
+                "",
+                true
+            )
+            AppDatabase.getInstance(context)?.getAlarmDao()?.insert(data)
+        }
     }
 
     class VMF() : ViewModelProvider.Factory {
