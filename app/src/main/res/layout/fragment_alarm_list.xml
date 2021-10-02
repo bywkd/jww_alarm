@@ -9,4 +9,14 @@
         android:layout_height="match_parent"
         android:layout_gravity="center" />
 
+    <TextView
+        android:id="@+id/tv_listEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="등록된 알림 일정이 없습니다."
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:visibility="gone" />
+
 </FrameLayout>
