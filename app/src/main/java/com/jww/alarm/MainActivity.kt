@@ -1,9 +1,12 @@
 package com.jww.alarm
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.jww.alarm.databinding.ActivityMainBinding
 import com.jww.alarm.eumes.VIEW_TYPE
+import com.jww.alarm.utils.permissions.PermissionClass
 import com.jww.alarm.views.alarmListView.AlarmListFragment
 import com.jww.alarm.views.registerAlarmView.RegisterAlarmFragment
 import com.jww.alarm.views.settingView.SettingFragment
@@ -13,12 +16,36 @@ class MainActivity : AppCompatActivity() {
     private val binding
         get() = _binding!!
 
+
+    val resultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            initBottomNaviMenu()
+        } else {
+//            추후 팝업으로 처음~2 번쨰와 더이상 나타나지 않는 상태를 분기 처리 해야한다.
+            PermissionClass().checkSettingPermission(this)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initBottomNaviMenu()
+
+
+        if (!PermissionClass().isPermission(this, PermissionClass.mainPermission)) {
+            val intent = Intent(this, PermissionClass::class.java)
+            intent.putStringArrayListExtra(
+                PermissionClass.INTENT_PERMISSION,
+                PermissionClass.mainPermission
+            )
+            resultLauncher.launch(intent)
+        } else {
+            initBottomNaviMenu()
+        }
     }
+
 
     private fun initBottomNaviMenu() {
         _binding?.run {
@@ -41,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
 //        loadFragment(VIEW_TYPE.ALARM_LIST)
         _binding?.bottomNV?.selectedItemId = R.id.navi_list
     }
