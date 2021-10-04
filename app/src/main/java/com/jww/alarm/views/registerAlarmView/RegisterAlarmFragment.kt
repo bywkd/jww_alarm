@@ -1,15 +1,22 @@
 package com.jww.alarm.views.registerAlarmView
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.jww.alarm.MainActivity
 import com.jww.alarm.bases.BaseFragment
 import com.jww.alarm.databinding.FragmentRegisterAlarmBinding
+import com.jww.alarm.receiver.AlarmReceiver
+import com.jww.alarm.receiver.AlarmReceiver.Companion.NOTIFICATION_ID
 
 class RegisterAlarmFragment : BaseFragment() {
 
@@ -74,6 +81,7 @@ class RegisterAlarmFragment : BaseFragment() {
 
         binding.ivRegister.setOnClickListener {
             vm.completeRegister(currentAct)
+            alarmInit()
         }
 
         binding.timePicker.setOnTimeChangedListener(vm.timerListener)
@@ -103,5 +111,24 @@ class RegisterAlarmFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun alarmInit() {
+        val alarmManager =
+            currentAct.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(currentAct, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            currentAct,
+            NOTIFICATION_ID,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + (10 * 1000),
+            pendingIntent
+        )
+
     }
 }
