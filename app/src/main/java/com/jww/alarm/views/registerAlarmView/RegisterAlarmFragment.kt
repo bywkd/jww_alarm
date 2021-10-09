@@ -16,7 +16,7 @@ import com.jww.alarm.MainActivity
 import com.jww.alarm.bases.BaseFragment
 import com.jww.alarm.databinding.FragmentRegisterAlarmBinding
 import com.jww.alarm.receiver.AlarmReceiver
-import com.jww.alarm.receiver.AlarmReceiver.Companion.NOTIFICATION_ID
+import com.jww.alarm.services.AlarmBackgroundService.Companion.NOTIFICATION_ID
 
 class RegisterAlarmFragment : BaseFragment() {
 
@@ -131,4 +131,5 @@ class RegisterAlarmFragment : BaseFragment() {
         )
 
     }
+
 }
