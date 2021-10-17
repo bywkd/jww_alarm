@@ -1,9 +1,11 @@
 package com.jww.alarm
 
+
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import com.jww.alarm.databinding.ActivityMainBinding
 import com.jww.alarm.eumes.VIEW_TYPE
 import com.jww.alarm.utils.permissions.PermissionClass
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             initBottomNaviMenu()
         }
+
     }
 
 
@@ -71,6 +74,7 @@ class MainActivity : AppCompatActivity() {
 
 //        loadFragment(VIEW_TYPE.ALARM_LIST)
         _binding?.bottomNV?.selectedItemId = R.id.navi_list
+
     }
 
     private fun loadFragment(viewType: VIEW_TYPE) {
@@ -98,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                 val f = SettingFragment.newInstance()
                 val ft = supportFragmentManager.beginTransaction()
                 ft.replace(binding.flRoot.id, f)
-//                ft.addToBackStack(VIEW_TYPE.SETTING.toString())
+
                 ft.commit()
             }
         }

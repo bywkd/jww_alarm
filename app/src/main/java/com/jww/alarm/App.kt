@@ -22,7 +22,7 @@ class App : Application() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val audioAttributes = AudioAttributes.Builder().build()
             vib.vibrate(
-                VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE),
+                VibrationEffect.createOneShot(10000, VibrationEffect.DEFAULT_AMPLITUDE),
                 audioAttributes)
         }else{
             vib.vibrate(200)

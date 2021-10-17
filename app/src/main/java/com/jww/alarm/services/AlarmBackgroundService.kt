@@ -13,6 +13,7 @@ import android.os.Vibrator
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.jww.alarm.R
+import com.jww.alarm.receiver.AlarmReceiver
 
 //https://medium.com/mj-studio/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%EC%95%84%EC%84%B8%EC%9A%94-2-1-service-foreground-service-e19cf74df390
 class AlarmBackgroundService : Service() {
@@ -36,16 +37,6 @@ class AlarmBackgroundService : Service() {
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         vib = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         Log.d("Won", "onCreate")
-    }
-
-    private lateinit var backServiceIntent: Intent
-    private lateinit var backService: AlarmBackgroundService
-    private fun checkBackground() {
-//        backService = AlarmBackgroundService(applicationContext)
-//        backServiceIntent = Intent(applicationContext, backService::class.java)
-//        if (!AlarmReceiver().isServiceRunning(this, backService::class.java)) {
-//            startService(backServiceIntent)
-//        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -109,7 +100,7 @@ class AlarmBackgroundService : Service() {
                 .setContentTitle("알람 테스트")
                 .setContentText("알람 시간")
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
 
         } else {
 
@@ -119,7 +110,7 @@ class AlarmBackgroundService : Service() {
                 .setContentText("알람 시간")
                 .setVibrate(longArrayOf(0L))
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
         }
         builder.build().flags = Notification.FLAG_INSISTENT
     }
