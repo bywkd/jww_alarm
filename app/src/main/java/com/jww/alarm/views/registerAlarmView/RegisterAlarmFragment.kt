@@ -117,6 +117,7 @@ class RegisterAlarmFragment : BaseFragment() {
         val alarmManager =
             currentAct.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val intent = Intent(currentAct, AlarmReceiver::class.java)
+
         val pendingIntent = PendingIntent.getBroadcast(
             currentAct,
             NOTIFICATION_ID,
@@ -124,12 +125,11 @@ class RegisterAlarmFragment : BaseFragment() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        Log.d("Won","Alarm Intent")
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
             SystemClock.elapsedRealtime() + (10 * 1000),
             pendingIntent
         )
-
     }
-
 }

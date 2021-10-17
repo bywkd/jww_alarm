@@ -31,14 +31,12 @@ class PermissionClass : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         intent?.let {
             val permissionList = it.getStringArrayListExtra(INTENT_PERMISSION)
             permissionList?.let { list ->
                 requestPermission(list)
             }
         }
-
     }
 
     fun isPermission(activity: Activity, requestPermission: ArrayList<String>) =
