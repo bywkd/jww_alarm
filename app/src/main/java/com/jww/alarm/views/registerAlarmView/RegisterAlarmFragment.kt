@@ -16,7 +16,6 @@ import com.jww.alarm.MainActivity
 import com.jww.alarm.bases.BaseFragment
 import com.jww.alarm.databinding.FragmentRegisterAlarmBinding
 import com.jww.alarm.receiver.AlarmReceiver
-import com.jww.alarm.services.AlarmBackgroundService.Companion.NOTIFICATION_ID
 
 class RegisterAlarmFragment : BaseFragment() {
 
@@ -117,15 +116,20 @@ class RegisterAlarmFragment : BaseFragment() {
         val alarmManager =
             currentAct.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val intent = Intent(currentAct, AlarmReceiver::class.java)
+//        intent.action = "com.test"
+//        intent.action = Intent.ACTION_SCREEN_ON
+//        intent.action = Intent.ACTION_BOOT_COMPLETED
+//        intent.action = Intent.ACTION_SCREEN_OFF
+
 
         val pendingIntent = PendingIntent.getBroadcast(
             currentAct,
-            NOTIFICATION_ID,
+            AlarmReceiver.NOTI_ID_ALARM_RECEVER,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        Log.d("Won","Alarm Intent")
+        Log.d("Won", "Alarm Intent")
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
             SystemClock.elapsedRealtime() + (10 * 1000),

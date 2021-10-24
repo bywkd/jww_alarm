@@ -9,9 +9,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.disable_keyguard"/>
+    <uses-permission android:name="android.permission.disable_keyguard" />
 
     <application
         android:name=".App"
@@ -31,31 +30,39 @@
             </intent-filter>
         </activity>
         <activity android:name=".utils.permissions.PermissionClass" />
-        <activity android:name=".views.alarmPlayView.AlarmPlayView"
+        <activity
+            android:name=".views.alarmPlayView.AlarmLockScreenView"
+            android:excludeFromRecents="true"
+            android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
-            android:showOnLockScreen="true"
-            android:excludeFromRecents="true"/>
+            tools:targetApi="o_mr1" />
 
         <receiver
             android:name=".receiver.AlarmReceiver"
-            android:exported="false">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.DOCK_EVENT" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".services.AlarmBackgroundService"
             android:enabled="true"
             android:stopWithTask="false"
             tools:ignore="Instantiatable">
-            <intent-filter>
-                <action android:name="android.intent.action.SCREEN_OFF" />
-                <action android:name="android.intent.action.SCREEN_ON" />
-            </intent-filter>
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.SCREEN_OFF" />-->
+            <!--                <action android:name="android.intent.action.SCREEN_ON" />-->
+            <!--            </intent-filter>-->
         </service>
+
+        <service android:name=".services.LockScreenService" />
 
     </application>
 

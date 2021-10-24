@@ -14,6 +14,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.jww.alarm.R
 import com.jww.alarm.receiver.AlarmReceiver
+import com.jww.alarm.views.alarmPlayView.AlarmLockScreenView
 
 //https://medium.com/mj-studio/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%EC%95%84%EC%84%B8%EC%9A%94-2-1-service-foreground-service-e19cf74df390
 class AlarmBackgroundService : Service() {
@@ -47,7 +48,8 @@ class AlarmBackgroundService : Service() {
         stopSelf()
 
         notificationManager.notify(NOTIFICATION_ID, builder.build())
-        startVibrator(this)
+//        startVibrator(this)
+        startLockScreenActivity()
         return START_STICKY
     }
 
@@ -58,11 +60,17 @@ class AlarmBackgroundService : Service() {
         when (intent.action) {
             Intent.ACTION_SCREEN_OFF -> {
                 Log.d("Won", "ScreenOff")
+//                val intent = Intent(context, AlarmLockScreenView::class.java)
+//                intent.apply {
+//                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                }
+//                context.startActivity(intent)
             }
             Intent.ACTION_SCREEN_ON -> {
                 Log.d("Won", "ScreenOn")
             }
         }
+
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -116,8 +124,6 @@ class AlarmBackgroundService : Service() {
     }
 
     private fun startVibrator(context: Context) {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val audioAttributes = AudioAttributes.Builder().build()
             vib.vibrate(
@@ -126,5 +132,14 @@ class AlarmBackgroundService : Service() {
         } else {
             vib.vibrate(200000)
         }
+    }
+
+    private fun startLockScreenActivity() {
+        val intent = Intent(this, AlarmLockScreenView::class.java)
+        intent.apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        this.startActivity(intent)
+
     }
 }
