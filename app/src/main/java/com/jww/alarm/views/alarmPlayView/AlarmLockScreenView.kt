@@ -14,7 +14,7 @@ import com.jww.alarm.R
 import com.jww.alarm.bases.BaseActivity
 import com.jww.alarm.databinding.FragmentAlarmPlayBinding
 
-class AlarmPlayView : BaseActivity() {
+class AlarmLockScreenView : BaseActivity() {
     private var _binding: FragmentAlarmPlayBinding? = null
     private val binding
         get() = _binding!!
@@ -24,6 +24,7 @@ class AlarmPlayView : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("Won","AlarmPlayView create()")
         initLockScreen()
         _binding = FragmentAlarmPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -31,6 +32,7 @@ class AlarmPlayView : BaseActivity() {
         startVibrator()
         startSound()
         binds()
+        Log.d("Won","AlarmPlayView create() end")
     }
 
     private fun binds() {
