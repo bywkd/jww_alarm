@@ -24,7 +24,6 @@ class AlarmLockScreenView : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("Won","AlarmPlayView create()")
         initLockScreen()
         _binding = FragmentAlarmPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,7 +31,6 @@ class AlarmLockScreenView : BaseActivity() {
         startVibrator()
         startSound()
         binds()
-        Log.d("Won","AlarmPlayView create() end")
     }
 
     private fun binds() {
@@ -76,7 +74,6 @@ class AlarmLockScreenView : BaseActivity() {
     }
 
     private fun startSound() {
-        Log.d("Won", "startSound")
         mediaPlayer = MediaPlayer.create(this, R.raw.sound01_45)
         mediaPlayer.isLooping = true
         mediaPlayer.start()
