@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +19,7 @@ import com.jww.alarm.MainActivity
 import com.jww.alarm.bases.BaseFragment
 import com.jww.alarm.databinding.FragmentRegisterAlarmBinding
 import com.jww.alarm.receiver.AlarmReceiver
+import java.util.*
 
 class RegisterAlarmFragment : BaseFragment() {
 
@@ -78,10 +78,20 @@ class RegisterAlarmFragment : BaseFragment() {
     }
 
     private fun uiDataInit() {
+        val calendar = Calendar.getInstance()
         vm.uiInitSound(false)
             .uiInitVibration(true)
-            .uiInitTime(binding.timePicker, 6, 30)
-            .uiInitCalendar(binding.calendar, 2021, 3, 20)
+            .uiInitTime(
+                binding.timePicker,
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE)
+            )
+            .uiInitCalendar(
+                binding.calendarView,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DATE)
+            )
     }
 
     private fun checkLockScreenPermission() {
@@ -109,7 +119,7 @@ class RegisterAlarmFragment : BaseFragment() {
         }
 
         binding.timePicker.setOnTimeChangedListener(vm.timerListener)
-        binding.calendar.setOnDateChangeListener(vm.calendarListener)
+        binding.calendarView.setOnDateChangeListener(vm.calendarListener)
     }
 
     private fun observer() {
@@ -149,10 +159,9 @@ class RegisterAlarmFragment : BaseFragment() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        Log.d("Won", "Alarm Intent")
         alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + (10 * 1000),
+            AlarmManager.RTC_WAKEUP,
+            vm.calendar.timeInMillis,
             pendingIntent
         )
     }
