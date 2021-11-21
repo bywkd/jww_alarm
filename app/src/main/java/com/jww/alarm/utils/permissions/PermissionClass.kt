@@ -21,8 +21,6 @@ class PermissionClass : AppCompatActivity() {
 
         val mainPermission = arrayListOf(
             Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-            Manifest.permission.RECEIVE_BOOT_COMPLETED,
-            Manifest.permission.FOREGROUND_SERVICE,
             Manifest.permission.VIBRATE,
             Manifest.permission.WAKE_LOCK,
             Manifest.permission.CAMERA
@@ -42,7 +40,7 @@ class PermissionClass : AppCompatActivity() {
     fun isPermission(activity: Activity, requestPermission: ArrayList<String>) =
         isCheckPermission(activity, requestPermission)
 
-    fun checkSettingPermission(context: Context){
+    fun checkSettingPermission(context: Context) {
         val intent =
             Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.parse("package:" + BuildConfig.APPLICATION_ID))
         context.startActivity(intent)

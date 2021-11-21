@@ -1,25 +1,22 @@
-package com.jww.alarm.views.alarmPlayView
+package com.jww.alarm.views.alarmLockScreen
 
 import android.app.KeyguardManager
 import android.content.Context
-import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.util.Log
 import android.view.WindowManager
+import com.jww.alarm.App
 import com.jww.alarm.R
 import com.jww.alarm.bases.BaseActivity
 import com.jww.alarm.databinding.FragmentAlarmPlayBinding
 
-class AlarmLockScreenView : BaseActivity() {
+class AlarmLockScreenActivity : BaseActivity() {
     private var _binding: FragmentAlarmPlayBinding? = null
     private val binding
         get() = _binding!!
 
-    private lateinit var vib: Vibrator
     private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,8 +24,7 @@ class AlarmLockScreenView : BaseActivity() {
         initLockScreen()
         _binding = FragmentAlarmPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        vib = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        startVibrator()
+        (applicationContext as App).startVibrator()
         startSound()
         binds()
     }
@@ -59,18 +55,6 @@ class AlarmLockScreenView : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    private fun startVibrator() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val audioAttributes = AudioAttributes.Builder().build()
-            vib.vibrate(
-                VibrationEffect.createOneShot(10000, VibrationEffect.DEFAULT_AMPLITUDE),
-                audioAttributes
-            )
-        } else {
-            vib.vibrate(200)
-        }
     }
 
     private fun startSound() {

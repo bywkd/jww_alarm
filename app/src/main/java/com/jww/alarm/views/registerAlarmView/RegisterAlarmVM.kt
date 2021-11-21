@@ -1,7 +1,6 @@
 package com.jww.alarm.views.registerAlarmView
 
 import android.content.Context
-import android.util.Log
 import android.widget.CalendarView
 import android.widget.TimePicker
 import androidx.lifecycle.MutableLiveData
@@ -24,19 +23,20 @@ class RegisterAlarmVM : ViewModel() {
     var month: Int = 0
     var dayOfMonth: Int = 0
 
-    private val calendar by lazy { Calendar.getInstance() }
+    val calendar by lazy { Calendar.getInstance() }
 
     val timerListener = TimePicker.OnTimeChangedListener { timePicker, hour, min ->
         this.hour = hour
         this.min = min
+        calendar.set(this.year, this.month, this.dayOfMonth, this.hour, this.min)
     }
 
     val calendarListener =
         CalendarView.OnDateChangeListener { calendarView, year, month, dayOfMonth ->
-            calendar.set(year, month, dayOfMonth)
             this.year = year
-            this.month = month + 1
+            this.month = month
             this.dayOfMonth = dayOfMonth
+            calendar.set(this.year, this.month, this.dayOfMonth, this.hour, this.min)
         }
 
     fun uiInitSound(isSound: Boolean): RegisterAlarmVM {
@@ -69,7 +69,7 @@ class RegisterAlarmVM : ViewModel() {
         this.month = month
         this.dayOfMonth = dayOfMonth
 
-        calendar.set(this.year, this.month - 1, this.dayOfMonth)
+        calendar.set(this.year, this.month, this.dayOfMonth)
         calendarView.date = calendar.timeInMillis
         return this
     }
@@ -86,7 +86,6 @@ class RegisterAlarmVM : ViewModel() {
 
     fun completeRegister(context: Context) {
 
-        Log.d("Won", "hour = $hour")
         GlobalScope.launch(Dispatchers.IO) {
             val data = AlarmDataEntity(
                 0,

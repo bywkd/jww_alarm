@@ -5,7 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
-import com.jww.alarm.views.alarmPlayView.AlarmLockScreenView
+import com.jww.alarm.views.alarmLockScreen.AlarmLockScreenActivity
 
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -18,6 +18,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @SuppressLint("InvalidWakeLockTag")
     override fun onReceive(context: Context?, intent: Intent?) {
+
         context?.let {
             startPowerSystem(it)
         }
@@ -25,7 +26,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
 
     private fun startLockScreenActivity(context: Context) {
-        val intent = Intent(context, AlarmLockScreenView::class.java)
+        val intent = Intent(context, AlarmLockScreenActivity::class.java)
         intent.apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
@@ -48,4 +49,9 @@ class AlarmReceiver : BroadcastReceiver() {
             sCpuWakeLock = null
         }
     }
+
+//    private fun checkAlarm():Boolean {
+//
+//        return true
+//    }
 }
