@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBottomNaviMenu() {
-
         binding.bottomNV.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navi_list -> {

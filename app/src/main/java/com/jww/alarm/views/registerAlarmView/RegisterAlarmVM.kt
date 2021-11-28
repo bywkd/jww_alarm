@@ -15,6 +15,7 @@ import java.util.*
 
 class RegisterAlarmVM : ViewModel() {
     val isRegister = MutableLiveData(true)
+    val registerUid = MutableLiveData(0)
     val isSound = MutableLiveData(true)
     val isVibration = MutableLiveData(true)
     var hour: Int = 0
@@ -85,7 +86,6 @@ class RegisterAlarmVM : ViewModel() {
 
 
     fun completeRegister(context: Context) {
-
         GlobalScope.launch(Dispatchers.IO) {
             val data = AlarmDataEntity(
                 0,
@@ -99,7 +99,13 @@ class RegisterAlarmVM : ViewModel() {
                 "",
                 true
             )
-            AppDatabase.getInstance(context)?.getAlarmDao()?.insert(data)
+            val uId = AppDatabase.getInstance(context)?.getAlarmDao()?.insert(data)
+            uId?.let {
+                launch(Dispatchers.Main) {
+                    registerUid.value = it
+                }
+            }
+
         }
     }
 
@@ -107,6 +113,5 @@ class RegisterAlarmVM : ViewModel() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return RegisterAlarmVM() as T
         }
-
     }
 }

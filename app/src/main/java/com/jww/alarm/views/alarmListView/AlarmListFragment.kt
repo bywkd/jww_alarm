@@ -36,7 +36,6 @@ class AlarmListFragment : BaseFragment() {
 
     private lateinit var currentAct: MainActivity
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
