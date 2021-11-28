@@ -48,6 +48,7 @@ class RegisterAlarmFragment : BaseFragment() {
     private val binding
         get() = _binding!!
 
+
     private lateinit var vm: RegisterAlarmVM
     private lateinit var currentAct: MainActivity
     override fun onAttach(context: Context) {
@@ -115,7 +116,6 @@ class RegisterAlarmFragment : BaseFragment() {
 
         binding.ivRegister.setOnClickListener {
             vm.completeRegister(currentAct)
-            alarmRegister()
         }
 
         binding.timePicker.setOnTimeChangedListener(vm.timerListener)
@@ -140,6 +140,10 @@ class RegisterAlarmFragment : BaseFragment() {
             }
             Log.d("Won", "isVibration = $it")
         })
+
+        vm.registerUid.observe(viewLifecycleOwner, {
+            registerAlarm(it)
+        })
     }
 
     override fun onDestroyView() {
@@ -147,11 +151,11 @@ class RegisterAlarmFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun alarmRegister() {
+    private fun registerAlarm(uid: Int) {
         val alarmManager =
             currentAct.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val intent = Intent(currentAct, AlarmReceiver::class.java)
-
+        intent.putExtra("uid", uid)
         val pendingIntent = PendingIntent.getBroadcast(
             currentAct,
             AlarmReceiver.ALARM_RECEIVER_CODE,
