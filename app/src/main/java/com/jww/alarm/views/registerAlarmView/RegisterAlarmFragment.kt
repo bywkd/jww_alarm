@@ -19,6 +19,7 @@ import com.jww.alarm.MainActivity
 import com.jww.alarm.bases.BaseFragment
 import com.jww.alarm.databinding.FragmentRegisterAlarmBinding
 import com.jww.alarm.receiver.AlarmReceiver
+import com.jww.alarm.utils.DialogUtil
 import java.util.*
 
 class RegisterAlarmFragment : BaseFragment() {
@@ -142,7 +143,9 @@ class RegisterAlarmFragment : BaseFragment() {
         })
 
         vm.registerUid.observe(viewLifecycleOwner, {
-            registerAlarm(it)
+            DialogUtil(currentAct).setMessage("알람을 등록 하시겠습니까?").addBtnOK { registerAlarm(it) }
+                .show()
+
         })
     }
 
