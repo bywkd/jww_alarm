@@ -15,7 +15,7 @@ import java.util.*
 
 class RegisterAlarmVM : ViewModel() {
     val isRegister = MutableLiveData(true)
-    val registerUid = MutableLiveData(0)
+    val registerUid = MutableLiveData(0L)
     val isSound = MutableLiveData(true)
     val isVibration = MutableLiveData(true)
     var hour: Int = 0

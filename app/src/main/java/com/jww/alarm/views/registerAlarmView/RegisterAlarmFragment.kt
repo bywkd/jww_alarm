@@ -74,8 +74,8 @@ class RegisterAlarmFragment : BaseFragment() {
 
     private fun init() {
         uiDataInit()
-        bind()
         observer()
+        bind()
         checkLockScreenPermission()
     }
 
@@ -116,7 +116,13 @@ class RegisterAlarmFragment : BaseFragment() {
         }
 
         binding.ivRegister.setOnClickListener {
-            vm.completeRegister(currentAct)
+            DialogUtil(currentAct)
+                .setMessage("알람을 등록 하시겠습니까?")
+                .addBtnOK {
+                    vm.completeRegister(currentAct)
+                }
+                .addBtnCancel { }
+                .show()
         }
 
         binding.timePicker.setOnTimeChangedListener(vm.timerListener)
@@ -143,9 +149,10 @@ class RegisterAlarmFragment : BaseFragment() {
         })
 
         vm.registerUid.observe(viewLifecycleOwner, {
-            DialogUtil(currentAct).setMessage("알람을 등록 하시겠습니까?").addBtnOK { registerAlarm(it) }
-                .show()
-
+            /*초기값 변환에 대한 예외 처리*/
+            if (it > 0L) {
+                registerAlarm(it)
+            }
         })
     }
 
@@ -154,7 +161,7 @@ class RegisterAlarmFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun registerAlarm(uid: Int) {
+    private fun registerAlarm(uid: Long) {
         val alarmManager =
             currentAct.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val intent = Intent(currentAct, AlarmReceiver::class.java)
