@@ -23,9 +23,9 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @SuppressLint("InvalidWakeLockTag")
     override fun onReceive(context: Context?, intent: Intent?) {
-        val uid = intent?.getIntExtra("uid", 0) ?: 0
+        val uid = intent?.getLongExtra("uid", 0L) ?: 0L
         Log.d("Won", "uid recevie = $uid")
-        if (uid > 0) {
+        if (uid > 0L) {
             context?.let {
                 checkAlarm(context, uid)
             }
@@ -56,7 +56,7 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun checkAlarm(context: Context, uid: Int) {
+    private fun checkAlarm(context: Context, uid: Long) {
         CoroutineScope(Dispatchers.IO).launch {
             val isActive =
                 AppDatabase.getInstance(context)?.getAlarmDao()?.isAlarms(uid)?.isActive ?: false

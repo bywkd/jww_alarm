@@ -21,12 +21,12 @@ class DialogUtil(context: Context) {
     }
 
     fun setTitle(title: String): DialogUtil {
-        dialog?.setTitle(title)
+        dlg.setTitle(title)
         return this
     }
 
     fun setMessage(message: String): DialogUtil {
-        dialog?.setMessage(message)
+        dlg.setMessage(message)
         return this
     }
 
@@ -43,11 +43,13 @@ class DialogUtil(context: Context) {
     }
 
     fun addBtnCancel(funListenerCancel: (() -> Unit)?): DialogUtil {
-        dlg.setOnCancelListener {
+        dlg.setNegativeButton(
+            "Cancel"
+        ) { dialogInterface, _ ->
             funListenerCancel?.let {
                 it()
             }
-            dialog?.dismiss()
+            dialogInterface.dismiss()
         }
         return this
     }
