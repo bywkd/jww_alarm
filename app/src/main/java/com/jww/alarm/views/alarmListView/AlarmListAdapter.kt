@@ -12,6 +12,7 @@ import com.jww.alarm.R
 import com.jww.alarm.databinding.ItemAlarmListBinding
 import com.jww.alarm.db.AlarmDataEntity
 import com.jww.alarm.db.AppDatabase
+import com.jww.alarm.utils.DialogUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -78,19 +79,21 @@ class AlarmListAdapter : RecyclerView.Adapter<AlarmListAdapter.ViewHolder>() {
 
             bind.swActive.isChecked = data.isActive
             bind.swActive.setOnCheckedChangeListener { compoundButton, b ->
-                Log.d("Won", "활성화 $b")
-                if (b) {
-
+                val message = if (b) {
+                    "알람이 활성화 되었습니다."
                 } else {
-
+                    "알람이 비활성화 되었습니다."
                 }
+                DialogUtil(compoundButton.context).setTitle(message).addBtnOK {}.show()
                 dataUpdate(compoundButton.context, data, data.sound, data.vibration, b)
             }
 
             bind.ivDelete.setOnClickListener {
-                GlobalScope.launch(Dispatchers.IO) {
-                    AppDatabase.getInstance(it.context)?.getAlarmDao()?.delete(data.uid)
-                }
+                DialogUtil(it.context).setTitle("정말로 알림을 삭제 하시겠습니까?").addBtnOK {
+                    GlobalScope.launch(Dispatchers.IO) {
+                        AppDatabase.getInstance(it.context)?.getAlarmDao()?.delete(data.uid)
+                    }
+                }.addBtnCancel { }.show()
             }
         }
 

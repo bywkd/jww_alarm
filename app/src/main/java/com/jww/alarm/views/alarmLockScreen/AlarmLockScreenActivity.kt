@@ -13,25 +13,31 @@ import com.jww.alarm.bases.BaseActivity
 import com.jww.alarm.databinding.FragmentAlarmPlayBinding
 
 class AlarmLockScreenActivity : BaseActivity() {
+
     private var _binding: FragmentAlarmPlayBinding? = null
     private val binding
         get() = _binding!!
 
-    private lateinit var mediaPlayer: MediaPlayer
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLockScreen()
         _binding = FragmentAlarmPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        (applicationContext as App).startVibrator()
-        startSound()
+
+        val sound = intent?.getBooleanExtra("sound", true)
+        val vibration = intent?.getBooleanExtra("vibration", true)
+        startSound(sound!!)
+        if (vibration!!) {
+            (applicationContext as App).startVibrator()
+        }
         binds()
     }
 
     private fun binds() {
         binding.btnCloseSound.setOnClickListener {
-            mediaPlayer.stop()
+            mediaPlayer?.stop()
             this.finish()
         }
     }
@@ -57,10 +63,12 @@ class AlarmLockScreenActivity : BaseActivity() {
         _binding = null
     }
 
-    private fun startSound() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.sound01_45)
-        mediaPlayer.isLooping = true
-        mediaPlayer.start()
+    private fun startSound(isSound: Boolean) {
+        if (isSound) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.sound01_45)
+            mediaPlayer?.isLooping = true
+            mediaPlayer?.start()
+        }
     }
 
     override fun onBackPressed() {
