@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNV.selectedItemId = R.id.navi_list
     }
 
-    private fun loadFragment(viewType: VIEW_TYPE) {
+    fun loadFragment(viewType: VIEW_TYPE) {
         when (viewType) {
             VIEW_TYPE.ALARM_LIST -> {
 //                알람 목록 화면

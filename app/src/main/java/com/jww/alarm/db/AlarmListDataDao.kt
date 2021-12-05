@@ -12,7 +12,7 @@ interface AlarmListDataDao {
     fun getAlarmList(): LiveData<List<AlarmDataEntity>>
 
     @Insert
-    fun insert(alarmData: AlarmDataEntity): Int
+    fun insert(alarmData: AlarmDataEntity): Long
 
     @Query("UPDATE AlarmData set hour = :hour, min = :min, year = :year, month = :month, dayOfMonth = :dayOfMonth, sound = :sound, vibration = :vibration, soundFileName = :soundFileName, isActive = :isActive WHERE uid = :uid")
     fun update(
@@ -36,5 +36,5 @@ interface AlarmListDataDao {
 
 
     @Query("SELECT * FROM AlarmData WHERE uid = :uid")
-    fun isAlarms(uid: Int): AlarmDataEntity
+    fun isAlarms(uid: Long): AlarmDataEntity
 }

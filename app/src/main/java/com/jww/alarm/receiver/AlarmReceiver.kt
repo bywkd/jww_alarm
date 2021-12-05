@@ -23,25 +23,27 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @SuppressLint("InvalidWakeLockTag")
     override fun onReceive(context: Context?, intent: Intent?) {
-        val uid = intent?.getIntExtra("uid", 0) ?: 0
+        val uid = intent?.getLongExtra("uid", 0L) ?: 0L
         Log.d("Won", "uid recevie = $uid")
-        if (uid > 0) {
+        if (uid > 0L) {
             context?.let {
                 checkAlarm(context, uid)
             }
         }
     }
 
-    private fun startLockScreenActivity(context: Context) {
+    private fun startLockScreenActivity(context: Context, sound: Boolean, vibration: Boolean) {
         val intent = Intent(context, AlarmLockScreenActivity::class.java)
         intent.apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra("sound", sound)
+            putExtra("vibration", vibration)
         }
         context.startActivity(intent)
     }
 
     @SuppressLint("InvalidWakeLockTag")
-    private fun startPowerSystem(context: Context) {
+    private fun startPowerSystem(context: Context, sound: Boolean, vibration: Boolean) {
         val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         sCpuWakeLock = pm.newWakeLock(
             PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.ON_AFTER_RELEASE,
@@ -49,19 +51,21 @@ class AlarmReceiver : BroadcastReceiver() {
         )
 
         sCpuWakeLock?.acquire()
-        startLockScreenActivity(context)
+        startLockScreenActivity(context, sound, vibration)
         sCpuWakeLock?.release()
         sCpuWakeLock ?: let {
             sCpuWakeLock = null
         }
     }
 
-    private fun checkAlarm(context: Context, uid: Int) {
+    private fun checkAlarm(context: Context, uid: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            val isActive =
-                AppDatabase.getInstance(context)?.getAlarmDao()?.isAlarms(uid)?.isActive ?: false
+            val alarm = AppDatabase.getInstance(context)?.getAlarmDao()?.isAlarms(uid)
+            val isActive = alarm?.isActive ?: false
+            val sound = alarm?.sound ?: false
+            val vibration = alarm?.vibration ?: false
             if (isActive) {
-                startPowerSystem(context)
+                startPowerSystem(context, sound, vibration)
             }
         }
     }

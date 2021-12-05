@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,15 +13,6 @@
         android:background="@color/white"
         android:padding="10dp"
         app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/iv_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center"
-            android:adjustViewBounds="true"
-            android:src="@android:drawable/ic_input_delete"
-            app:tint="@color/black" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -98,20 +90,22 @@
                     android:background="@android:color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:weightSum="1">
 
                     <ImageView
                         android:id="@+id/iv_sound"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
                         android:adjustViewBounds="true"
-                        android:src="@android:drawable/ic_lock_silent_mode_off"
                         app:tint="@color/basicColor" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
                         android:text="@string/sound"
                         android:textColor="@color/black"
                         android:textSize="30sp" />
@@ -130,20 +124,22 @@
                     android:background="@android:color/white"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:weightSum="1">
 
                     <ImageView
                         android:id="@+id/iv_vibration"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
                         android:adjustViewBounds="true"
-                        android:src="@android:drawable/ic_popup_reminder"
                         app:tint="@color/basicColor" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:layout_weight="0.5"
                         android:text="@string/vibration"
                         android:textColor="@color/black"
                         android:textSize="30sp" />

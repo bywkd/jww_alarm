@@ -16,9 +16,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.jww.alarm.MainActivity
+import com.jww.alarm.R
 import com.jww.alarm.bases.BaseFragment
 import com.jww.alarm.databinding.FragmentRegisterAlarmBinding
+import com.jww.alarm.eumes.VIEW_TYPE
+import com.jww.alarm.glides.GlideApp
 import com.jww.alarm.receiver.AlarmReceiver
+import com.jww.alarm.utils.DialogUtil
 import java.util.*
 
 class RegisterAlarmFragment : BaseFragment() {
@@ -73,8 +77,8 @@ class RegisterAlarmFragment : BaseFragment() {
 
     private fun init() {
         uiDataInit()
-        bind()
         observer()
+        bind()
         checkLockScreenPermission()
     }
 
@@ -115,7 +119,13 @@ class RegisterAlarmFragment : BaseFragment() {
         }
 
         binding.ivRegister.setOnClickListener {
-            vm.completeRegister(currentAct)
+            DialogUtil(currentAct)
+                .setMessage("알람을 등록 하시겠습니까?")
+                .addBtnOK {
+                    vm.completeRegister(currentAct)
+                }
+                .addBtnCancel { }
+                .show()
         }
 
         binding.timePicker.setOnTimeChangedListener(vm.timerListener)
@@ -126,8 +136,14 @@ class RegisterAlarmFragment : BaseFragment() {
         vm.isSound.observe(viewLifecycleOwner, {
             if (it) {
 //                온 이미지
+                GlideApp.with(binding.ivSound)
+                    .load(R.drawable.baseline_volume_up_white_24)
+                    .into(binding.ivSound)
             } else {
 //                오프 이미지
+                GlideApp.with(binding.ivSound)
+                    .load(R.drawable.baseline_volume_off_white_24)
+                    .into(binding.ivSound)
             }
             Log.d("Won", "isSound = $it")
         })
@@ -135,14 +151,23 @@ class RegisterAlarmFragment : BaseFragment() {
         vm.isVibration.observe(viewLifecycleOwner, {
             if (it) {
 //                온 이미지
+                GlideApp.with(binding.ivVibration)
+                    .load(R.drawable.baseline_vibration_white_24)
+                    .into(binding.ivVibration)
             } else {
 //                오프 이미지
+                GlideApp.with(binding.ivVibration)
+                    .load(R.drawable.baseline_vibration_white_24_off)
+                    .into(binding.ivVibration)
             }
             Log.d("Won", "isVibration = $it")
         })
 
         vm.registerUid.observe(viewLifecycleOwner, {
-            registerAlarm(it)
+            /*초기값 변환에 대한 예외 처리*/
+            if (it > 0L) {
+                registerAlarm(it)
+            }
         })
     }
 
@@ -151,7 +176,7 @@ class RegisterAlarmFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun registerAlarm(uid: Int) {
+    private fun registerAlarm(uid: Long) {
         val alarmManager =
             currentAct.getSystemService(AppCompatActivity.ALARM_SERVICE) as AlarmManager
         val intent = Intent(currentAct, AlarmReceiver::class.java)
@@ -168,5 +193,6 @@ class RegisterAlarmFragment : BaseFragment() {
             vm.calendar.timeInMillis,
             pendingIntent
         )
+        currentAct.loadFragment(VIEW_TYPE.ALARM_LIST)
     }
 }
